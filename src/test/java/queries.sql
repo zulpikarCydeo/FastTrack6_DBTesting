@@ -69,7 +69,75 @@ where  FIRST_NAME not like '__%__';
 
 -- aggregate functions
 -- sum  avg  min max
+select salary from EMPLOYEEs;
+select min(SALARY), max(SALARY), avg(SALARY), sum(SALARY) from EMPLOYEES;
+select min(SALARY), max(SALARY), round(avg(SALARY),1), sum(SALARY) from EMPLOYEES;
+
+-- group by
+select FIRST_NAME,JOB_ID from EMPLOYEES;
+select JOB_ID, count(*) from EMPLOYEES
+group by JOB_ID;
+
+select DEPARTMENT_ID , sum(SALARY) from EMPLOYEES
+group by DEPARTMENT_ID;
+
+-- having  providing condition
+select DEPARTMENT_ID , sum(SALARY) from EMPLOYEES
+group by DEPARTMENT_ID
+having sum(salary) > 20000;
+
+-- difference between having and where
+-- where is put condition before group by, applies to individual rows
+-- having is put condition after group by, applies to grouped rows
+
+-- row number
+select FIRST_NAME from EMPLOYEES
+where ROWNUM < 11;
+
+--subquery
+select max(SALARY) from EMPLOYEES;
 
 
+-- highest salary
+select FIRST_NAME from EMPLOYEES
+where  SALARY = (select max(SALARY) from EMPLOYEES);
 
+-- second highest salary
+select max(SALARY) from EMPLOYEES
+where  SALARY < (select max(SALARY) from EMPLOYEES);
 
+select FIRST_NAME, LAST_NAME from EMPLOYEES
+where  SALARY = (select max(SALARY) from EMPLOYEES
+                 where  SALARY < (select max(SALARY) from EMPLOYEES));
+
+-- string functions
+-- concatenation  ||
+select FIRST_NAME || ' ' || LAST_NAME from EMPLOYEES;
+
+-- lower upper length  intcap
+select lower(FIRST_NAME), upper(LAST_NAME), initcap(email),length(LAST_NAME) from EMPLOYEES;
+
+-- substring (starting point, take how many characters)
+select LAST_NAME, substr(LAST_NAME,1,3) from EMPLOYEES;
+
+-- view   virtual table
+create view fullInfo as select * from EMPLOYEES;
+
+--join
+-- (INNER) JOIN: Returns records that have matching values in both tables
+-- LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+-- RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+-- FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+select DEPARTMENT_NAME, city from LOCATIONS
+left join DEPARTMENTS
+on LOCATIONS.LOCATION_ID = DEPARTMENTS.LOCATION_ID;
+
+SELECT FIRST_NAME, END_DATE FROM EMPLOYEES
+RIGHT OUTER JOIN JOB_HISTORY
+ON EMPLOYEES.EMPLOYEE_ID = JOB_HISTORY.EMPLOYEE_ID;
+
+select * from JOB_HISTORY;
+
+SELECT FIRST_NAME, END_DATE FROM EMPLOYEES
+left OUTER JOIN JOB_HISTORY
+ON EMPLOYEES.EMPLOYEE_ID = JOB_HISTORY.EMPLOYEE_ID;
