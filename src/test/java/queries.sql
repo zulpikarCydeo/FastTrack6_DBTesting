@@ -141,3 +141,88 @@ select * from JOB_HISTORY;
 SELECT FIRST_NAME, END_DATE FROM EMPLOYEES
 left OUTER JOIN JOB_HISTORY
 ON EMPLOYEES.EMPLOYEE_ID = JOB_HISTORY.EMPLOYEE_ID;
+
+-- self join
+select e1.employee_id,e1.first_name,e1.last_name,e1.manager_id,e2.employee_id,e2.first_name,e2.last_name
+from employees e1 join employees e2
+                       on e1.manager_id = e2.employee_id;
+
+
+-- DDL & DML  (DDL is for data structure, DML is for data itself)
+-- create table
+create table Teachers(
+                         T_id integer primary key ,
+                         T_name char(40),
+                         T_branch char(40)
+);
+
+select *
+from TEACHERS;
+
+create table Students(
+                         S_id integer primary key ,
+                         S_name char(40),
+                         S_branch char(40)
+
+);
+
+-- insert value
+insert into TEACHERS values (1,'Jamal','Automation');
+insert into TEACHERS values (2,'Muhtar','Java');
+insert into TEACHERS values (3,'Oscar','API');
+
+insert into STUDENTS values (1,'Ahmet','Java');
+insert into STUDENTS values (2,'Jenifer','API');
+insert into STUDENTS values (3,'Suarez','Automation');
+
+select * from TEACHERS;
+select * from STUDENTS;
+
+-- update
+update STUDENTS
+set S_BRANCH='Database'
+where S_ID=2;
+select * from STUDENTS;
+
+-- delete one row
+delete STUDENTS
+where S_id = 2;
+
+-- alter
+-- add column
+alter table TEACHERS
+add Salary integer;
+select * from TEACHERS;
+
+-- change column names
+alter table TEACHERS rename column Salary to T_Salary;
+
+-- delete column
+alter table TEACHERS drop column T_SALARY;
+
+-- truncate  -- only delete the datas
+truncate table TEACHERS;
+
+--drop  -- delete the whole table from database
+drop table TEACHERS;
+
+-- set operator
+-- union  -- duplicated data is deleted and the whole table is sorted
+select FIRST_NAME from EMPLOYEES
+union
+select LAST_NAME from EMPLOYEES;
+
+--union all -- duplicated data is not deleted and the whole table is not sorted
+select FIRST_NAME from EMPLOYEES
+union all
+select LAST_NAME from EMPLOYEES;
+
+-- minus
+select SALARY from EMPLOYEES
+minus
+select COMMISSION_PCT from EMPLOYEES;
+
+-- intersect
+select EMPLOYEE_ID from EMPLOYEES
+intersect
+select MANAGER_ID from EMPLOYEES;
